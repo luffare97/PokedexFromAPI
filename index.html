@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script src="index.js"></script>
+    
+    
+</head>
+<body>
+    
+
+    <input type="text" id="searchName" placeholder="Search for a pokémon">
+    <button onclick="fetchData()" id="SearchButton">Get pokémon</button><br>
+
+    <h1 class="errorText" id="Notfound" style="display: none;">Pokemon could not be found</h1>
+
+    <div id="pokemonContainer" style="display: none;">
+        <h2 id="foundName"></h2>
+        <img src="" alt="Pokémon Sprite" id="pokemonSprite" >
+        <p id="type1" class="types"></p>
+        <p id="type2" class="types"></p>
+    </div>
+    
+    
+</body>
+</html>
