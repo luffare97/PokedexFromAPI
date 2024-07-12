@@ -4,8 +4,8 @@ window.onload = function () {
 
 function GetMons() {
     try {
-        const response = fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0");
-        console.log(response);
+        const dex = fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0");
+        console.log(dex);
     }
     catch (error) {
         console.error(error);
@@ -17,9 +17,9 @@ function GetMons() {
 
 
 async function fetchData() {
-    const searchName = document.getElementById("searchName").value.toLowerCase();
+    const searchName = newdocument.getElementById("searchName").value.toLowerCase();
     if (searchName == "") {
-        
+
     }
     else {
 
