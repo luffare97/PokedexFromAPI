@@ -1,83 +1,102 @@
 window.onload = function () {
     GetMons();
-};
+}
+let allPokemon = []
 
 function GetMons() {
     try {
-        const dex = fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0");
-        console.log(dex);
+        fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
+            .then(response => response.json())
+            .then(function (fetchedPokemon) {
+                allPokemon = fetchedPokemon.results;
+                console.log(allPokemon)
+
+            })
+
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+
+
+async function Search() {
+    const searchName = document.getElementById("searchName").value.toLowerCase();
+    pokemon = localStorage.getItem(searchName);
+
+    fetchData(pokemon);
+
+    /*
+    allPokemon.forEach(element => {
+        if (element.name == searchString) {
+            fetchData(element.url);            
+        }
+    });
+    */
+}
+
+
+
+async function fetchData(link) {
+
+    console.log(link)
+
+
+    try {
+
+        const response = await fetch(link);
+
+        const Notfound = document.getElementById("Notfound");
+        const pokemonContainer = document.getElementById("pokemonContainer");
+        const foundName = document.getElementById("foundName");
+        const imgElement = document.getElementById("pokemonSprite");
+        const type1 = document.getElementById("type1");
+        const type2 = document.getElementById("type2");
+
+
+        if (!response.ok) {
+            pokemonContainer.style.display = "none";
+            Notfound.style.display = "grid";
+            throw new Error("Could not fetch resource");
+
+        }
+
+
+        Notfound.style.display = "none";
+        pokemonContainer.style.display = "grid";
+        const data = await response.json();
+        console.log(data);
+        Name = data.name;
+        foundName.innerHTML = Name.charAt(0).toUpperCase() + Name.slice(1);
+        const pokemonSprite = data.sprites.front_default;
+        imgElement.src = pokemonSprite;
+
+        if (data.types.length == 2) {
+            type1.innerHTML = data.types[0].type.name;
+            type1.style.backgroundColor = TypeColor(type1.innerHTML);
+            type1.style.gridColumn = "1";
+
+
+            type2.innerHTML = data.types[1].type.name;
+            type2.style.backgroundColor = TypeColor(type2.innerHTML);
+            type2.style.gridColumn = "2";
+            type2.style.display = "grid";
+
+
+        }
+        else {
+            type1.style.gridColumn = "1/3";
+            type1.innerHTML = data.types[0].type.name;
+            type1.style.backgroundColor = TypeColor(type1.innerHTML);
+            type2.style.display = "none";
+        }
+
     }
     catch (error) {
         console.error(error);
     }
 
-};
-
-
-
-
-async function fetchData() {
-    const searchName = newdocument.getElementById("searchName").value.toLowerCase();
-    if (searchName == "") {
-
-    }
-    else {
-
-        try {
-
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchName}`);
-
-            const Notfound = document.getElementById("Notfound");
-            const pokemonContainer = document.getElementById("pokemonContainer");
-            const foundName = document.getElementById("foundName");
-            const imgElement = document.getElementById("pokemonSprite");
-            const type1 = document.getElementById("type1");
-            const type2 = document.getElementById("type2");
-
-
-            if (!response.ok) {
-                pokemonContainer.style.display = "none";
-                Notfound.style.display = "grid";
-                throw new Error("Could not fetch resource");
-
-            }
-
-
-            Notfound.style.display = "none";
-            pokemonContainer.style.display = "grid";
-            const data = await response.json();
-            console.log(data);
-            Name = data.name;
-            foundName.innerHTML = Name.charAt(0).toUpperCase() + Name.slice(1);
-            const pokemonSprite = data.sprites.front_default;
-            imgElement.src = pokemonSprite;
-
-            if (data.types.length == 2) {
-                type1.innerHTML = data.types[0].type.name;
-                type1.style.backgroundColor = TypeColor(type1.innerHTML);
-                type1.style.gridColumn = "1";
-
-
-                type2.innerHTML = data.types[1].type.name;
-                type2.style.backgroundColor = TypeColor(type2.innerHTML);
-                type2.style.gridColumn = "2";
-                type2.style.display = "grid";
-
-
-            }
-            else {
-                type1.style.gridColumn = "1/3";
-                type1.innerHTML = data.types[0].type.name;
-                type1.style.backgroundColor = TypeColor(type1.innerHTML);
-                type2.style.display = "none";
-            }
-
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-};
+}
 
 function TypeColor(type) {
     switch (type) {
@@ -118,12 +137,12 @@ function TypeColor(type) {
         case "fairy":
             return "#D685AD"
     }
-};
+}
 
 
 
 
 function createPokeDiv(data) {
 
-};
+}
 
