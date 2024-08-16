@@ -21,7 +21,7 @@ function GetMons() {
 
 
 async function Search() {
-    //ClearMons("flex-box")
+
     const searchName = document.getElementById("searchName").value.toLowerCase();
 
 
@@ -50,7 +50,7 @@ async function fetchData(link) {
         console.log(data);
 
         createPokeDiv(data);
-        
+
     }
     catch (error) {
         console.error(error);
@@ -99,8 +99,7 @@ function TypeColor(type) {
     }
 }
 
-function ClearMons(elementID)
-{
+function ClearMons(elementID) {
     document.getElementById(elementID).innerHTML = "";
 }
 
@@ -109,10 +108,10 @@ function createPokeDiv(data) {
     const container = document.createElement("div");
     container.classList.add("pokemonContainer");
 
-    
+
     const nametext = document.createElement("h2");
     nametext.classList.add("foundName");
-    container.appendChild(nametext); 
+    container.appendChild(nametext);
     let Name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
     Name = Name.replace(/-/g, " ");
     nametext.appendChild(document.createTextNode(Name));
@@ -137,7 +136,7 @@ function createPokeDiv(data) {
         type2.appendChild(document.createTextNode(typeName))
         type2.classList.add("type2")
         container.appendChild(type2);
-        
+
         type2.style.backgroundColor = TypeColor(data.types[1].type.name);
 
 
@@ -154,9 +153,9 @@ function createPokeDiv(data) {
         type1.style.backgroundColor = TypeColor(data.types[0].type.name);
 
     }
-    
-    
-    
+
+
+
 
     const flexbox = document.getElementById("flex-box");
 
