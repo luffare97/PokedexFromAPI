@@ -21,23 +21,23 @@ function GetMons() {
 
 
 async function Search() {
+    //ClearMons("flex-box")
     const searchName = document.getElementById("searchName").value.toLowerCase();
-    pokemon = localStorage.getItem(searchName);
 
-    fetchData(pokemon);
 
-    /*
     allPokemon.forEach(element => {
-        if (element.name == searchString) {
-            fetchData(element.url);            
+        if (element.name.includes(searchName)) {
+            fetchData(element.url);
         }
-    });
-    */
+    })
+
 }
 
 
 
 async function fetchData(link) {
+
+    ClearMons("flex-box");
 
     console.log(link)
 
@@ -46,51 +46,11 @@ async function fetchData(link) {
 
         const response = await fetch(link);
 
-        const Notfound = document.getElementById("Notfound");
-        const pokemonContainer = document.getElementById("pokemonContainer");
-        const foundName = document.getElementById("foundName");
-        const imgElement = document.getElementById("pokemonSprite");
-        const type1 = document.getElementById("type1");
-        const type2 = document.getElementById("type2");
-
-
-        if (!response.ok) {
-            pokemonContainer.style.display = "none";
-            Notfound.style.display = "grid";
-            throw new Error("Could not fetch resource");
-
-        }
-
-
-        Notfound.style.display = "none";
-        pokemonContainer.style.display = "grid";
         const data = await response.json();
         console.log(data);
-        Name = data.name;
-        foundName.innerHTML = Name.charAt(0).toUpperCase() + Name.slice(1);
-        const pokemonSprite = data.sprites.front_default;
-        imgElement.src = pokemonSprite;
 
-        if (data.types.length == 2) {
-            type1.innerHTML = data.types[0].type.name;
-            type1.style.backgroundColor = TypeColor(type1.innerHTML);
-            type1.style.gridColumn = "1";
-
-
-            type2.innerHTML = data.types[1].type.name;
-            type2.style.backgroundColor = TypeColor(type2.innerHTML);
-            type2.style.gridColumn = "2";
-            type2.style.display = "grid";
-
-
-        }
-        else {
-            type1.style.gridColumn = "1/3";
-            type1.innerHTML = data.types[0].type.name;
-            type1.style.backgroundColor = TypeColor(type1.innerHTML);
-            type2.style.display = "none";
-        }
-
+        createPokeDiv(data);
+        
     }
     catch (error) {
         console.error(error);
@@ -139,10 +99,67 @@ function TypeColor(type) {
     }
 }
 
-
+function ClearMons(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+}
 
 
 function createPokeDiv(data) {
+    const container = document.createElement("div");
+    container.classList.add("pokemonContainer");
 
+    
+    const nametext = document.createElement("h2");
+    nametext.classList.add("foundName");
+    container.appendChild(nametext); 
+    let Name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+    Name = Name.replace(/-/g, " ");
+    nametext.appendChild(document.createTextNode(Name));
+
+    const sprite = document.createElement("img");
+    sprite.src = data.sprites.front_default;
+    sprite.classList.add("pokemonSprite");
+    container.appendChild(sprite);
+
+    if (data.types.length == 2) {
+
+        let typeName = data.types[0].type.name.charAt(0).toUpperCase() + data.types[0].type.name.slice(1);
+        const type1 = document.createElement("p")
+        type1.appendChild(document.createTextNode(typeName))
+        type1.classList.add("type1")
+        container.appendChild(type1);
+
+        type1.style.backgroundColor = TypeColor(data.types[0].type.name);
+
+        typeName = data.types[1].type.name.charAt(0).toUpperCase() + data.types[1].type.name.slice(1);
+        const type2 = document.createElement("p")
+        type2.appendChild(document.createTextNode(typeName))
+        type2.classList.add("type2")
+        container.appendChild(type2);
+        
+        type2.style.backgroundColor = TypeColor(data.types[1].type.name);
+
+
+
+    }
+    else {
+
+        let typeName = data.types[0].type.name.charAt(0).toUpperCase() + data.types[0].type.name.slice(1);
+        const type1 = document.createElement("p")
+        type1.appendChild(document.createTextNode(typeName))
+        type1.classList.add("monoType")
+        container.appendChild(type1);
+
+        type1.style.backgroundColor = TypeColor(data.types[0].type.name);
+
+    }
+    
+    
+    
+
+    const flexbox = document.getElementById("flex-box");
+
+    flexbox.appendChild(container);
 }
 
